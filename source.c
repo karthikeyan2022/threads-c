@@ -1,9 +1,19 @@
+/*
+An example of multithreaded, synchronized program in C.
+
+Mutual exclusion
+
+Command to build:
+gcc -g -O2 -o source source.c -lpthread
+
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
 #include <semaphore.h>
 
 #define NUM_CHILDREN 2
+#define DEFAULT_COUNT_SIZE 10000  // 10^4
 
 void perror_exit(char* s)
 {
@@ -41,6 +51,7 @@ typedef struct {
 Shared* make_shared(int end)
 {
     int i;
+    // create a shared object; This is shared by two children threads
     Shared* shared = check_malloc(sizeof(Shared));
 
     shared->counter = 0;
@@ -83,6 +94,7 @@ void child_code(Shared* shared)
         if(shared->counter >= shared->end)
             return;
 
+        // in proper synchronization, the value in array idx will exactly be 1
         shared->array[shared->counter]++;
         shared->counter++;
 
@@ -103,23 +115,27 @@ void check_array(Shared* shared)
 {
     int i, errors = 0;
 
-    printf ("Checking...\n");
+    printf ("Checking... ");
 
     for (i=0; i<shared->end; i++) {
         if (shared->array[i] != 1) errors++;
     }
 
-    printf ("%d errors.\n", errors);
+    printf ("%d Errors found!\n", errors);
 }
 
-int main()
+int main(int argc, char* argv[])
 {
-    printf("hello world \n");
-
     int i;
+    int num_count = DEFAULT_COUNT_SIZE;
     pthread_t child[NUM_CHILDREN];
 
-    Shared* shared = make_shared(100);
+    if(argc >=2)
+        num_count = (int)strtol(argv[1], NULL, 10);
+
+    printf("The threads counts up to %d value.\n", num_count);
+   
+    Shared* shared = make_shared(num_count);
 
     for(i = 0; i < NUM_CHILDREN; i++)
     {
