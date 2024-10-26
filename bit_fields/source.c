@@ -1,24 +1,9 @@
-#include <stdio.h>
-// mask should be UNSIGNED
-// This mask is 32-bit 
-#define MASK(x) ((unsigned int) (1 << x))
-void printBinary(unsigned int x) {
+/*
+Bit fields
+*/
 
-    // 32-bit
-    printf("Binary of %u is : ", x);
-    for(int i = 31; i >= 0; i--){
-
-        if(x & MASK(i))
-            printf("%d ", 1);
-        else
-            printf("%d ", 0);
-    }
-    printf("\n");
-
-}
-
-/////////////////////////////////////////////////////////
-//////////////// BIT FIELDS //////////////////////////
+#include "stdio.h"
+#include "../common/common.h"
 
 typedef union { 
     unsigned int ppn;
@@ -27,11 +12,11 @@ typedef union {
         unsigned int block : 15;
         unsigned int valid : 1;        
     } phy_info; 
-} phyaddr;
+} PHY_ADDR;
 
 int main() {
 
-    phyaddr temp;
+    PHY_ADDR temp;
 
     temp.phy_info.page = 10;
     temp.phy_info.block = 1;
@@ -42,7 +27,7 @@ int main() {
     
     printf("Block is valid? %d \n", (temp.ppn & MASK(31) ? 1 : 0));
 
-    phyaddr temp2;
+    PHY_ADDR temp2;
     temp2 = temp;
     temp2.phy_info.valid = 0;
     printf("Block is valid? %d \n", (temp2.ppn & MASK(31) ? 1 : 0));

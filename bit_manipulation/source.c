@@ -1,25 +1,5 @@
 #include "stdio.h"
-
-// mask should be UNSIGNED
-// This mask is 32-bit 
-#define MASK(x) ((unsigned int) (1 << x))
-
-void manage_port_B();
-
-void printBinary(int x) {
-
-    // 32-bit
-    printf("Binary of %d is : ", x);
-    for(int i = 31; i >= 0; i--){
-
-        if(x & MASK(i))
-            printf("%d ", 1);
-        else
-            printf("%d ", 0);
-    }
-    printf("\n");
-
-}
+#include "../common/common.h"
 
 void manage_port_B(int reg) {
     int temp;
