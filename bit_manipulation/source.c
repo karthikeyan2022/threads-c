@@ -21,21 +21,6 @@ void printBinary(int x) {
 
 }
 
-int main()
-{
-    // Learning #1
-    // Learn about masking macro - check bit
-    printBinary(MASK(5) | MASK(4));
-    printBinary((1 << 5) - 1);
-    printBinary(31);
-
-
-    // Learning #2 - Set/clear bit, check bit and invert bit
-    manage_port_B(MASK(3)|MASK(7)|MASK(4)); // any number
-
-}
-
-
 void manage_port_B(int reg) {
     int temp;
     temp = reg;
@@ -56,4 +41,18 @@ void manage_port_B(int reg) {
 
     printBinary(temp);
     reg = temp; // commit changes to reg
+}
+
+int main()
+{
+    // Learning #1
+    // Learn about masking macro - check bit
+    printBinary(MASK(5) | MASK(4));
+    printBinary((1 << 5) - 1);
+    printBinary(31);
+
+
+    // Learning #2 - Set/clear bit, check bit and invert bit
+    manage_port_B(MASK(3)|MASK(7)|MASK(4)); // any number
+
 }
